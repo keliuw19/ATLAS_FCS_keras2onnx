@@ -1,0 +1,32 @@
+Bootstrap: library
+From: ubuntu:22.04
+Stage: build
+
+%setup
+    echo In setup
+    touch ${SINGULARITY_ROOTFS}/file_made_at_setup
+
+%files
+    ./simple_test.py
+    ./requirements.py
+
+%environment
+    export LC_ALL=C
+
+%post
+    apt-get update && apt-get install -y python3-pip
+    pip3 install -r requirements.txt
+
+%runscript
+    echo "Container was created"
+    echo "Arguments received: $*"
+    exec echo "$@"
+    python3 simple_test.py
+
+%labels
+    Author henryday-hall
+    Version v0.0.1
+
+%help
+    This is an attempt to run keras2onnx
+
