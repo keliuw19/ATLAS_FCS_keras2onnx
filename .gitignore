@@ -1,0 +1,32 @@
+# python ignores
+__pycache__/
+develop-eggs/
+*.pyc
+.ipynb_checkpoints
+
+
+# vim swap files
+*.swp
+
+
+# outputs
+simlinks_to_flatTTrees/
+*.png
+*.pdf
+
+
+# lxplus stuff
+.asetup.save
+.bash_history
+.job.ad
+
+# personal
+TODO.*
+pyment.conf
+
+# data
+from_lxplus/
+data/
+
+# mac junk
+.DS_store
