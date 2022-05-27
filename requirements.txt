@@ -1,2 +1,6 @@
+# keras2onnx needs a more specific requirements.txt file
+# but fixing the keras version here should solve it
+keras==2.2.4
 # core packages needed
 tensorflow
+keras2onnx

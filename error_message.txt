@@ -1,0 +1,15 @@
+# command;
+# singularity run keras2onnx.sif v49/Real_relu_pions_25_30_best_model.h5
+Arguments received: v49/Real_relu_pions_25_30_best_model.h5
+2022-05-27 09:39:07.330048: W tensorflow/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /.singularity.d/libs
+2022-05-27 09:39:07.330070: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+Traceback (most recent call last):
+  File "ConvertList.py", line 2, in <module>
+    import tensorflow as tf
+  File "/home/henry/.local/lib/python3.8/site-packages/tensorflow/__init__.py", line 444, in <module>
+    _ll.load_library(_main_dir)
+  File "/home/henry/.local/lib/python3.8/site-packages/tensorflow/python/framework/load_library.py", line 154, in load_library
+    py_tf.TF_LoadLibrary(lib)
+tensorflow.python.framework.errors_impl.NotFoundError: /usr/local/lib/python3.8/dist-packages/tensorflow/core/kernels/libtfkernel_sobol_op.so: undefined symbol: _ZNK10tensorflow8OpKernel11TraceStringB5cxx11ERKNS_15OpKernelContextEb
+Python returned 1
+# This means that there is missing information about the model

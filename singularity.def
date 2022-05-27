@@ -1,5 +1,5 @@
 Bootstrap: library
-From: ubuntu:22.04
+From: ubuntu:20.04
 Stage: build
 
 %setup
@@ -7,26 +7,37 @@ Stage: build
     touch ${SINGULARITY_ROOTFS}/file_made_at_setup
 
 %files
-    ./simple_test.py
-    ./requirements.py
+    ./requirements.txt
+    ./ConvertList.py
 
 %environment
     export LC_ALL=C
 
 %post
-    apt-get update && apt-get install -y python3-pip
+    # need software-properties-common for add-apt-repository
+    apt update && apt install -y software-properties-common && apt update
+    # need the universe repository for python3-pip
+    add-apt-repository universe && apt update
+    apt install -y python3-pip
+    # need pip for all out python packages
     pip3 install -r requirements.txt
 
 %runscript
-    echo "Container was created"
     echo "Arguments received: $*"
-    exec echo "$@"
-    python3 simple_test.py
+    python3 ConvertList.py "$@"
+    return_code=$?
+    echo "Python returned $return_code"
 
 %labels
-    Author henryday-hall
+    Author Henry Day-Hall
     Version v0.0.1
 
 %help
-    This is an attempt to run keras2onnx
+    This is an attempt to run keras2onnx without having to install anything
+    directly on lxplus.
+    Expected usage;
+    singularity run keras2onnx /path/to/my/keras.k5 /path/to/another/keras.h5 \
+        --outputs /where/to/put/onnx.onnx /where/to/put/another.onnx
+    The outputs flag is optional.
+    
 
