@@ -43,4 +43,12 @@ which is a dict of functions defining custom objects needed by tensorflow.
 If the `--custom` flag is not given, some default custom objects
 are passed.
 
+For reasons that remain mysterious to me, the model you are trying to read from
+needs to be in your local directory, not in the eos directory. 
+If it's in eos you will get an error like;  `OSError: SavedModel file does not exist at: /eos/path/to/your/model.h5{saved_model.pbtxt|saved_model.pb}`,
+that doesn't necessarily mean you cannot read that `.h5` file, just you need
+to move it somewhere else first.
+In the same manner, it will not write outputs to eos.
+There are examples of doing this in `Convert.py`.
+It doesn't seem to matter where the `keras2onnx.sif` is.
 
