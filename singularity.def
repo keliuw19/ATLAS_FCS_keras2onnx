@@ -11,7 +11,7 @@ Stage: build
     ./ConvertList.py /scripts/ConvertList.py
 
 %environment
-    export TF_KERAS='0'
+    export TF_KERAS='1'
 
 %post
     # need software-properties-common for add-apt-repository
@@ -27,7 +27,7 @@ Stage: build
 
 %runscript
     echo "Arguments received: $*"
-    python3 ConvertList.py "$@"
+    python3 /scripts/ConvertList.py "$@"
     return_code=$?
     echo "Python returned $return_code"
 

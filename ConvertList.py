@@ -28,7 +28,7 @@ if args.custom is None:
     def get_custom_objects():
         # Define custom loss
         def weighted_mean_squared_error(y_true, y_pred):
-              return keras.backend.mean(keras.backend.square(y_true-y_pred)*weights)
+            return keras.backend.mean(keras.backend.square(y_true-y_pred)*weights)
 
         custom = {'weighted_mean_squared_error': weighted_mean_squared_error}
         return custom
@@ -38,10 +38,10 @@ else:
         import sys
         module_name = "custom_objects_module"
 
-		spec = importlib.util.spec_from_file_location(module_name, args.custom)
-		module = importlib.util.module_from_spec(spec)
-		sys.modules[module_name] = module
-		spec.loader.exec_module(module)
+        spec = importlib.util.spec_from_file_location(module_name, args.custom)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[module_name] = module
+        spec.loader.exec_module(module)
         if not hasattr(module, 'custom_objects'):
             message = "Could not find attribute " + \
                       "'custom_objects' in {}".format(args.custom)
@@ -53,9 +53,8 @@ custom_objects = get_custom_objects()
 # Loop over eta bins (models)
 for inp, out in zip(args.inputs, args.outputs):
     print(f'Convert model {inp} to {out}')
-    model = tf.keras.models.load_model(inp)
-    onnx_model = keras2onnx.convert_keras(model, model.name,
-                                          custom_objects=custom_objects)
+    model = tf.keras.models.load_model(inp, custom_objects=custom_objects)
+    onnx_model = keras2onnx.convert_keras(model, model.name)
     keras2onnx.save_model(onnx_model, out)
  
 print('>>> ALL DONE <<<')

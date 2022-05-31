@@ -1,7 +1,13 @@
-# keras2onnx needs a more specific requirements.txt file
-# but fixing the keras version here should solve it
-# keras==2.2.4
-keras==2.6.0
 # core packages needed
-tensorflow==2.9.1
 keras2onnx==1.7.0
+# keras2onnx needs a more specific requirements.txt file
+# so we have to fix the tensorflow and keras versions
+tensorflow==2.3.0
+keras==2.3.0
+# then more things need fixing as a result of fixing those
+# two packages
+onnx==1.7.0
+numpy==1.16.0
+protobuf==3.20
+# I don't understand why these last items need specifying manually,
+# but for whatever reason it only works if I do.
