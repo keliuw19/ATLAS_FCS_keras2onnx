@@ -4,14 +4,14 @@ Stage: build
 
 %setup
     echo In setup
-    touch ${SINGULARITY_ROOTFS}/file_made_at_setup
+    mkdir ${SINGULARITY_ROOTFS}/scripts
 
 %files
     ./requirements.txt
-    ./ConvertList.py
+    ./ConvertList.py /scripts/ConvertList.py
 
 %environment
-    export LC_ALL=C
+    export TF_KERAS='0'
 
 %post
     # need software-properties-common for add-apt-repository
@@ -21,6 +21,9 @@ Stage: build
     apt install -y python3-pip
     # need pip for all out python packages
     pip3 install -r requirements.txt
+    # make sure we have read and execute permission on the script
+    chmod 755 /scripts
+    chmod 755 /scripts/ConvertList.py
 
 %runscript
     echo "Arguments received: $*"
@@ -30,14 +33,20 @@ Stage: build
 
 %labels
     Author Henry Day-Hall
-    Version v0.0.1
+    Version v0.0.2
 
 %help
     This is an attempt to run keras2onnx without having to install anything
     directly on lxplus.
     Expected usage;
-    singularity run keras2onnx /path/to/my/keras.k5 /path/to/another/keras.h5 \
-        --outputs /where/to/put/onnx.onnx /where/to/put/another.onnx
-    The outputs flag is optional.
+    ```
+    singularity run keras2onnx /path/to/my/keras.h5 /path/to/another/keras.h5 \
+        --outputs /where/to/put/onnx.onnx /where/to/put/another.onnx \
+        --custom /path/to/customobjects.py
+    ```
+    The outputs and custom flags are optional.
+    Without the output flag, the outputs will be named as the inputs are
+    but with `.onnx` appended. Without the custom flag, default custom objects
+    will be used.
     
 
