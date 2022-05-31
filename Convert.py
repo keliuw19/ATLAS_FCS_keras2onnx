@@ -19,24 +19,22 @@ if 'pions' in Particle or Particle == 'all':
 else:
   EtaBins = ['{}_{}'.format(x*5,x*5+5) for x in range(26)]
 
-# Path to models
-PATH = f'/eos/atlas/atlascerngroupdisk/proj-simul/AF3_Run3/Jona/Regression_Condor_Outputs/{Version}/'
+# find the inputs
+input_path = f'/eos/atlas/atlascerngroupdisk/proj-simul/AF3_Run3/Jona/Regression_Condor_Outputs/{Version}/'
+input_file_format = os.path.join(input_path, f"{Particle}_{{}}_best_model.h5")
+input_files = [input_file_format.format(etabin) for etabin in EtaBins]
 
-# import modules
-import tensorflow as tf
-import keras2onnx
-
-# Create output folders
+# Create output folder
 import os
-os.system('mkdir -p Outputs/{}/{}/'.format(Particle,Version))
+output_path = os.path.join('Outputs', Particle, Version)
+os.system(f'mkdir -p {output_path}')
+# and find the outputs
+output_file_format = os.path.join(output_path, f"{Particle}_{{}}_model.onnx")
+output_files = [output_file_format.format(etabin) for etabin in EtaBins]
 
-# Loop over eta bins (models)
-for etabin in EtaBins:
-  InputFileName = f'{PATH}Real_relu_{Particle}_{etabin}_best_model.h5'
-  print('Convert model in {}'.format(InputFileName))
-  model         = tf.keras.models.load_model(InputFileName)
-  onnx_model    = keras2onnx.convert_keras(model, model.name)
-  outFile       = f'Outputs/{Particle}/{Version}/{Particle}_{etabin}_model.onnx'
-  keras2onnx.save_model(onnx_model, outFile)
-
-print('>>> ALL DONE <<<')
+# send the command to the singularity
+inputs = ' '.join(input_files)
+outputs = ' '.join(output_files)
+singularity_location = '/eos/atlas/atlascerngroupdisk/proj-simul/AF3_Run3/Jona/keras2onnx.sif'
+command = f"singularity {singularity_location} {inputs} --outputs {outputs}"
+os.system(command)
