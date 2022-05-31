@@ -4,6 +4,8 @@ develop-eggs/
 *.pyc
 .ipynb_checkpoints
 
+# singularity containers
+*.sif
 
 # vim swap files
 *.swp
