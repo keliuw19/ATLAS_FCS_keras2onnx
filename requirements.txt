@@ -2,8 +2,8 @@
 keras2onnx==1.7.0
 # keras2onnx needs a more specific requirements.txt file
 # so we have to fix the tensorflow and keras versions
-tensorflow==2.3.0
-keras==2.3.0
+tensorflow==2.4.0
+keras==2.4.0
 # then more things need fixing as a result of fixing those
 # two packages
 onnx==1.7.0
